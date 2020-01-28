@@ -48,7 +48,7 @@ client.on('message', msg => {
       let total = 0;
 
       for (let i = 0; i < numberOfDice; i++) {
-        const random = Math.floor(Math.random() * 6)
+        const random = Math.floor(Math.random() * 6) + 1;
         total += random;
         if (i !== numberOfDice - 1) {
           text += `${stringNumber[random - 1]} + `;
