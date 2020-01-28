@@ -8,7 +8,7 @@ const octokit = new Octokit({
 });
 
 client.on('ready', () => {
-  console.log(`Logged in as ${client.user.tag}!`);
+  console.log('Connecté au Discord!');
 });
 
 client.on('message', msg => {
@@ -29,6 +29,41 @@ client.on('message', msg => {
       msg.reply("C'est cassé, contact un dev (Genre Sumsun le BG) !");
       console.log('ERROR', err);
     })
+  }
+  else if (msg.content.includes('!dés')) {
+    const args = msg.content.split(' ');
+    const numberOfDice = parseInt(args[1]) || 1;
+
+    const stringNumber = [
+      ':one:',
+      ':two:',
+      ':three:',
+      ':four:',
+      ':five:',
+      ':six:'
+    ]
+
+    if (numberOfDice && numberOfDice > 0) {
+      let text = "Resultat: ";
+      let total = 0;
+
+      for (let i = 0; i < numberOfDice; i++) {
+        const random = Math.floor(Math.random() * 6)
+        total += random;
+        if (i !== numberOfDice - 1) {
+          text += `${stringNumber[random - 1]} + `;
+        }
+        else if (i === numberOfDice - 1) {
+          text += `${stringNumber[random - 1]}`;
+
+          if (numberOfDice > 1) {
+            text += ` = ${total}`;
+          }
+        }
+      }
+
+      msg.reply(text)
+    }
   }
 });
 
