@@ -43,12 +43,14 @@ client.on('message', msg => {
       ':six:'
     ]
 
+    const isDev = msg.member.roles.find(({ name }) => name.toLowerCase() === 'dev');
+
     if (numberOfDice && numberOfDice > 0) {
       let text = "Resultat: ";
       let total = 0;
 
       for (let i = 0; i < numberOfDice; i++) {
-        const random = Math.floor(Math.random() * 6) + 1;
+        const random = isDev ? 6 : Math.floor(Math.random() * 6) + 1;
         total += random;
         if (i !== numberOfDice - 1) {
           text += `${stringNumber[random - 1]} + `;
