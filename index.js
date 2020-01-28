@@ -26,7 +26,7 @@ client.on('message', msg => {
     }).then(() => {
       msg.reply('Une issue a bien été créé.');
     }).catch((err) => {
-      msg.reply("C'est cassé, contact un dev !");
+      msg.reply("C'est cassé, contact un dev (Genre Sumsun le BG) !");
       console.log('ERROR', err);
     })
   }
