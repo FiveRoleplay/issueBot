@@ -2,5 +2,6 @@
   "githubToken": "",
   "botDiscordToken": "",
   "repoGithub": "",
-  "usernameGithub": ""
+  "usernameGithub": "",
+  "issueChannelName": ""
 }

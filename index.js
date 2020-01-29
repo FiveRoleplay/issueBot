@@ -13,6 +13,8 @@ client.on('ready', () => {
 
 client.on('message', msg => {
   if (msg.content.includes('!issue')) {
+    if (msg.channel.name.toLowerCase() !== config.issueChannelName.toLowerCase()) return;
+
     const args = msg.content.split('"');
 
     const title = `${args[1]}`;
