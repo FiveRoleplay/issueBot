@@ -34,6 +34,11 @@ client.on('message', msg => {
     const args = msg.content.split(' ');
     const numberOfDice = parseInt(args[1]) || 1;
 
+    if (numberOfDice > 195) {
+      msg.reply("https://www.youtube.com/watch?v=fAlyj6Hcz3E");
+      return;
+    }
+
     const stringNumber = [
       ':one:',
       ':two:',
