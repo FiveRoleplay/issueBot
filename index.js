@@ -48,11 +48,11 @@ client.on('message', msg => {
       console.log('ERROR', err);
     })
   }
-  else if (msg.content.includes('!nico')) {
-    const channel = client.channels.find('name', msg.channel.name);
-    const nico = client.users.find('discriminator', '0001');
-    channel.send(nico, { files: ['./blobfish2.jpg'] });
-  }
+  // else if (msg.content.includes('!nico')) {
+  //   const channel = client.channels.find('name', msg.channel.name);
+  //   const nico = client.users.find('discriminator', '0001');
+  //   channel.send(nico, { files: ['./blobfish2.jpg'] });
+  // }
   else if (msg.content.includes('!dés')) {
     const args = msg.content.split(' ');
     const numberOfDice = parseInt(args[1]) || 1;
