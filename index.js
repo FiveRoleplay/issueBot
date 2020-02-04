@@ -32,6 +32,9 @@ client.on('message', msg => {
       console.log('ERROR', err);
     })
   }
+  else if (msg.content.includes('!nico')) {
+    msg.reply('', { files: ['./blobfish2.jpg'] })
+  }
   else if (msg.content.includes('!dés')) {
     const args = msg.content.split(' ');
     const numberOfDice = parseInt(args[1]) || 1;
