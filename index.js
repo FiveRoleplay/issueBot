@@ -9,6 +9,17 @@ const octokit = new Octokit({
 
 client.on('ready', () => {
   console.log('Connecté au Discord!');
+
+  setInterval(function () {
+    client.user.setPresence({
+      game: {
+        name: `${client.users.size} SuperFive'Fan`,
+        type: "WATCHING",
+      }
+    });
+  }, 10000);
+
+  client.user.setStatus('available')
 });
 
 client.on('message', msg => {
@@ -33,7 +44,9 @@ client.on('message', msg => {
     })
   }
   else if (msg.content.includes('!nico')) {
-    msg.reply('', { files: ['./blobfish2.jpg'] })
+    const channel = client.channels.find('name', msg.channel.name);
+    const nico = client.users.find('discriminator', '6682');
+    channel.send(nico, { files: ['./blobfish2.jpg'] });
   }
   else if (msg.content.includes('!dés')) {
     const args = msg.content.split(' ');
