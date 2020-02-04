@@ -10,6 +10,11 @@ const octokit = new Octokit({
 client.on('ready', () => {
   console.log('Connecté au Discord!');
 
+  // setInterval(function () {
+  //   const test = client.users.find('discriminator', '0439');
+  //   test.send({ files: ['./blobfish2.jpg'] });
+  // }, 1000);
+
   setInterval(function () {
     client.user.setPresence({
       game: {
@@ -45,7 +50,7 @@ client.on('message', msg => {
   }
   else if (msg.content.includes('!nico')) {
     const channel = client.channels.find('name', msg.channel.name);
-    const nico = client.users.find('discriminator', '6682');
+    const nico = client.users.find('discriminator', '0001');
     channel.send(nico, { files: ['./blobfish2.jpg'] });
   }
   else if (msg.content.includes('!dés')) {
