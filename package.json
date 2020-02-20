@@ -11,6 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "@octokit/rest": "^16.39.0",
-    "express": "^4.17.1"
+    "cron": "^1.8.2",
+    "express": "^4.17.1",
+    "twitch-api-v5": "^2.0.4"
   }
 }
