@@ -82,11 +82,6 @@ client.on('ready', () => {
 
   // new CronJob("*/2 * * * *", searchStreams).start();
 
-  // setInterval(function () {
-  //   const test = client.users.find('discriminator', '0439');
-  //   test.send({ files: ['./blobfish2.jpg'] });
-  // }, 1000);
-
   // new CronJob("*/1 * * * *", () => {
   //   const seb = client.users.find("discriminator", "2792");
   //   console.log(seb);
@@ -107,8 +102,9 @@ client.on('ready', () => {
 });
 
 client.on('message', async msg => {
-  if (msg.content.includes('!test')) {
-    
+  if (msg.content.includes('!mochemk')) {
+    const channel = client.channels.find('name', msg.channel.name);
+    channel.send({ files: ['./boutonvert.png'] });
   }
   else if (msg.content.includes('!issue')) {
     if (msg.channel.name.toLowerCase() !== config.issueChannelName.toLowerCase()) return;
