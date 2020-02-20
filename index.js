@@ -87,11 +87,11 @@ client.on('ready', () => {
   //   test.send({ files: ['./blobfish2.jpg'] });
   // }, 1000);
 
-  new CronJob("*/1 * * * *", () => {
-    const seb = client.users.find("discriminator", "2792");
-    console.log(seb);
-    seb.sendMessage("T'as cru t'étais qui?");
-  }).start();
+  // new CronJob("*/1 * * * *", () => {
+  //   const seb = client.users.find("discriminator", "2792");
+  //   console.log(seb);
+  //   seb.sendMessage("T'as cru t'étais qui?");
+  // }).start();
 
 
   setInterval(function () {
