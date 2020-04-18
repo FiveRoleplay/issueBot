@@ -1,8 +1,14 @@
+const express = require("express");
+const bodyParser = require("body-parser");
+const app = express();
 const Discord = require('discord.js');
 const Octokit = require("@octokit/rest");
 const config = require('./config.json');
 const api = require("twitch-api-v5");
 const CronJob = require("cron").CronJob;
+
+app.use(bodyParser.json()); // support json encoded bodies
+app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 api.clientID = "buemxzzsq0n2ttyfsyo080npaax118";
 
@@ -176,3 +182,125 @@ client.on('message', async msg => {
 });
 
 client.login(config.botDiscordToken);
+
+app.post("/check", function (req, res) {
+  const { username } = req.body;
+
+  if (!username) {
+    res.send('Invalid params');
+    return;
+  }
+
+  const exist = client.users.cache.find(user => user.username === username) ? true : false;
+
+  res.send({
+    exist,
+  });
+});
+
+app.post("/message", function (req, res) {
+  const { username, state } = req.body;
+
+  if (!username || !state) {
+    res.send('Invalid params');
+    return;
+  }
+
+  const user = client.users.cache.find(user => user.username === username);
+
+  if (user) {
+    let color;
+    let message;
+    let gif;
+
+    switch(state) {
+      case 'WHITELIST_GOOD': {
+        color = "#00FF00";
+        gif = "https://media.giphy.com/media/l1J9xV815LOOTUju0/giphy.gif";
+        message = [
+          `Salutations ${username},`,
+          '',
+          "tu viens d’être accepté sur la whitelist de FiveRP.",
+          "Tu peux dès à présent te connecter sur le teamspeak (avec le plugin) et rejoindre le serveur.",
+          '',
+          "Amuses toi bien.",
+        ];
+        break;
+      }
+      case 'WHITELIST_PROGRESS': {
+        color = "#FFD601";
+        gif = "https://media.giphy.com/media/Hovfs6SeMERMc/giphy.gif";
+        message = [
+          `Salutations ${username},`,
+          '',
+          "nous avons bien reçus ta candidature pour rejoindre la whitelist de FiveRP. Nous corrigeons en général sous 48h les QCM, inutile de t'inquiéter tu recevras un message privée lorsque la correction sera effectué.",
+          '',
+          'À bientôt !',
+        ];
+        break;
+      }
+      case 'WHITELIST_BAD': {
+        color = "#FF0000";
+        gif = "https://media.giphy.com/media/y65VoOlimZaus/giphy.gif";
+        message = [
+          `Salutations ${username},`,
+          '',
+          "malheureusement tu as échoué lors d’une étape de la whitelist, nous t’invitons à retenter ta chance.",
+          '',
+          'À la prochaine.'
+        ];
+        break;
+      }
+      case 'WHITELIST_WAIT_VOCAL': {
+        color = "#FFD601";
+        gif = "https://media.giphy.com/media/9PnP3QnWhxI6lMiYWY/giphy.gif";
+        message = [
+          `Salutations ${username},`,
+          '',
+          "tu as réussi ton QCM et tu es désormais en attente d'entretien oral.",
+          "Tu trouveras des salons sur discord afin d’effectuer cet entretiens, l’heure est variable et le jour aussi mais en général c’est un jour sur deux vers la fin de journée.",
+          '',
+          "Bonne chance à toi.",
+        ];
+        break;
+      }
+      case 'WHITELIST_SECOND': {
+        color = "#FF0000";
+        gif = "https://media.giphy.com/media/xUn3BWwJsCgIkLi8Ba/giphy.gif";
+        message = [
+          `Salutations ${username},`,
+          '',
+          "tu as échoué à ton premier essai mais tu bénéficies d’une deuxième chance.",
+          '',
+          'Allez, on se motive !'
+        ];
+        break;
+      }
+    }
+
+    if (!message) {
+      res.send("Invalid state param");
+      return;
+    }
+
+    let embed = new Discord.MessageEmbed()
+      .setColor(color)
+      .setTitle("Whitelist FiveRP")
+      .setThumbnail("https://i.gyazo.com/334ed3ed08f0315d7eb8a08a3937a435.png")
+      .setDescription(message)
+      .setTimestamp()
+      .setFooter("L'équipe de FiveRP");
+      // .addField("Inline field title", "Some value here", true);
+    
+    let embed2 = new Discord.MessageEmbed()
+      .setColor(color)
+      .setImage(gif);
+
+    user.send(embed);
+    user.send(embed2);
+  }
+
+  res.send(user ? 'Message sended' : 'Message failed');
+});
+
+app.listen(3000);
