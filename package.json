@@ -10,8 +10,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@discordjs/opus": "^0.1.0",
     "@octokit/rest": "^16.39.0",
     "cron": "^1.8.2",
+    "discord.js": "^12.1.1",
     "express": "^4.17.1",
     "twitch-api-v5": "^2.0.4"
   }

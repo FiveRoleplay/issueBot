@@ -103,7 +103,7 @@ client.on('ready', () => {
 
 client.on('message', async msg => {
   if (msg.content.includes('!mochemk')) {
-    const channel = client.channels.find('name', msg.channel.name);
+    const channel = client.channels.cache.find((test) => test.name === msg.channel.name);
     channel.send({ files: ['./boutonvert.png'] });
   }
   else if (msg.content.includes('!issue')) {
@@ -149,7 +149,7 @@ client.on('message', async msg => {
       ':six:'
     ]
 
-    const isDev = msg.member.roles.find(({ name }) => name.toLowerCase() === 'dev');
+    const isDev = msg.member.roles.cache.some(({ name }) => name.toLowerCase() === 'dev');
 
     if (numberOfDice && numberOfDice > 0) {
       let text = "Resultat: ";
