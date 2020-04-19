@@ -33,10 +33,11 @@ const searchStreams = () => {
       const firstCall = res;
       const maxOffset = Math.floor(firstCall._total / 25);
       const streams = firstCall.streams;
+      let lastStreamsCount = firstCall.streams.length;
 
-      if (maxOffset > 0) {
+      if (lastStreamsCount === 25) {
         offset++;
-        while (offset < maxOffset) {
+        while (lastStreamsCount === 25) {
           const test = await new Promise((resolve) => {
               api.streams.live({ game: "Grand Theft Auto V", language: "fr", stream_type: "live", offset }, (err, res2) => {
               if (err) {
@@ -48,12 +49,13 @@ const searchStreams = () => {
               }
             })
           });
+          lastStreamsCount = test.length;
           streams.push(...test);
           offset++;
         }
       }
 
-      const filterStreams = streams.filter(stream => stream.channel.status.toLowerCase().includes('ventura')).reduce((acc, item) => {
+      const filterStreams = streams.filter(stream => stream.channel.status.toLowerCase().includes('uplife')).reduce((acc, item) => {
         if (!acc.some(elmt => elmt.channel.url === item.channel.url)) return [...acc, item];
         return acc;
       }, []);
@@ -61,8 +63,8 @@ const searchStreams = () => {
       filterStreams.forEach(async stream => {
         currentStream++;
         if (!streamsOnLive.some(elmt => elmt.url === stream.channel.url)) {
-          const channel = client.channels.find('name', 'test');
-          const test = await channel.send(`Hey, y'a lui il stream ${stream.channel.url}`);
+          const channel = client.channels.cache.find((elmt) => elmt.name === 'streams');
+          const test = await channel.send(`${stream.channel.name} | ${stream.channel.status} | ${stream.channel.url}`);
           streamsOnLive.push({ url: stream.channel.url, message: test });
           newStream++;
         }
@@ -83,10 +85,18 @@ const searchStreams = () => {
   })
 }
 
-client.on('ready', () => {
+client.on('ready', async () => {
   console.log('Connecté au Discord!');
 
-  // new CronJob("*/2 * * * *", searchStreams).start();
+  const streamChannel = client.channels.cache.find((elmt) => elmt.name === "streams");
+
+  const streamMessages = await streamChannel.messages.fetch();
+  if (streamMessages.size > 0) {
+    streamChannel.bulkDelete(streamMessages.size, true);
+  }
+
+  // searchStreams();
+  new CronJob("*/2 * * * *", searchStreams).start();
 
   // new CronJob("*/1 * * * *", () => {
   //   const seb = client.users.find("discriminator", "2792");
@@ -95,14 +105,14 @@ client.on('ready', () => {
   // }).start();
 
 
-  setInterval(function () {
+  setInterval(() => {
     client.user.setPresence({
       game: {
-        name: `${client.users.size} SuperFive'Fan`,
+        name: `${client.users.cache.size} SuperFive'Fan`,
         type: "WATCHING",
       }
     });
-  }, 10000);
+  }, 1000);
 
   client.user.setStatus('available')
 });
