@@ -120,11 +120,12 @@ const searchStreams = () => {
           const currentData = streamsOnLive.find(elmt => elmt.url === stream.channel.url);
 
           if (currentData.message.embeds[0].title !== stream.channel.status) {
+            const indexOf = streamsOnLive.indexOf(currentData);
             const newMessage = new Discord.MessageEmbed(currentData.message.embeds[0])
               .setTitle(stream.channel.status)
               .setImage(stream.preview.large);
   
-            currentData.message.edit(newMessage);
+            streamsOnLive[idnexOf] = currentData.message.edit(newMessage);
           }
         }
       })
