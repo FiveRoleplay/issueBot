@@ -7,6 +7,7 @@ const config = require('./config.json');
 const api = require("twitch-api-v5");
 const CronJob = require("cron").CronJob;
 
+app.set("Secret", config.secret);
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
@@ -57,7 +58,7 @@ const searchStreams = () => {
         }
       }
 
-      const filterStreams = streams.filter(stream => stream.channel.status.toLowerCase().includes('uplife')).reduce((acc, item) => {
+      const filterStreams = streams.filter(stream => stream.channel.status.toLowerCase().includes('gtalife')).reduce((acc, item) => {
         if (!acc.some(elmt => elmt.channel.url === item.channel.url)) return [...acc, item];
         return acc;
       }, []);
@@ -129,14 +130,15 @@ client.on('ready', async () => {
   //   test.edit(new Discord.MessageEmbed(test.embeds[0]).setTitle("New Title"));
   // }, 2000);
 
-
-  const streamMessages = await streamChannel.messages.fetch();
-  if (streamMessages.size > 0) {
-    streamChannel.bulkDelete(streamMessages.size, true);
+  if (streamChannel) {
+    const streamMessages = await streamChannel.messages.fetch();
+    if (streamMessages.size > 0) {
+      streamChannel.bulkDelete(streamMessages.size, true);
+    }
+  
+    // searchStreams();
+    new CronJob("*/2 * * * *", searchStreams).start();
   }
-
-  // searchStreams();
-  new CronJob("*/2 * * * *", searchStreams).start();
 
   // new CronJob("*/1 * * * *", () => {
   //   const seb = client.users.find("discriminator", "2792");
@@ -233,6 +235,11 @@ client.on('message', async msg => {
 });
 
 client.login(config.botDiscordToken);
+
+app.post("/auth", (req, res) => {
+  const { username } = req.body;
+
+})
 
 app.post("/check", function (req, res) {
   const { username } = req.body;
