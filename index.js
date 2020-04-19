@@ -64,9 +64,27 @@ const searchStreams = () => {
         currentStream++;
         if (!streamsOnLive.some(elmt => elmt.url === stream.channel.url)) {
           const channel = client.channels.cache.find((elmt) => elmt.name === 'streams');
-          const test = await channel.send(`${stream.channel.name} | ${stream.channel.status} | ${stream.channel.url}`);
+
+          const embed = new Discord.MessageEmbed()
+            .setColor("#FFD601")
+            .setTitle(stream.channel.status)
+            .setAuthor(stream.channel.display_name, stream.channel.logo, stream.channel.url)
+            .setDescription(stream.channel.url)
+            .setThumbnail("https://i.gyazo.com/334ed3ed08f0315d7eb8a08a3937a435.png")
+            .setImage(stream.preview.large);
+
+          const test = await channel.send(embed);
           streamsOnLive.push({ url: stream.channel.url, message: test });
           newStream++;
+        }
+        else {
+          const currentData = streamsOnLive.find(elmt => elmt.url === stream.channel.url);
+
+          const newMessage = new Discord.MessageEmbed(currentData.message.embeds[0])
+            .setTitle(stream.channel.status)
+            .setImage(stream.preview.large);
+
+          currentData.message.edit(newMessage);
         }
       })
 
@@ -89,6 +107,23 @@ client.on('ready', async () => {
   console.log('Connecté au Discord!');
 
   const streamChannel = client.channels.cache.find((elmt) => elmt.name === "streams");
+
+  // const lel = new Discord.MessageEmbed()
+  //   .setColor("#FFD601")
+  //   .setTitle("[FiveRP] Test [Alt:V]")
+  //   .setAuthor('Sumsun', 'https://static-cdn.jtvnw.net/jtv_user_pictures/b443a53e-6870-4166-8b03-a9126a88ece0-profile_image-300x300.png', 'https://www.twitch.tv/sumsun93')
+  //   .setDescription("https://www.twitch.tv/sumsun93")
+  //   .setThumbnail("https://i.gyazo.com/334ed3ed08f0315d7eb8a08a3937a435.png")
+  //   .setImage("https://static-cdn.jtvnw.net/previews-ttv/live_user_jltomy-640x360.jpg");
+
+  // const test = await streamChannel.send(lel);
+
+  // console.log(test.embeds[0]);
+
+  // setTimeout(() => {
+  //   test.edit(new Discord.MessageEmbed(test.embeds[0]).setTitle("New Title"));
+  // }, 2000);
+
 
   const streamMessages = await streamChannel.messages.fetch();
   if (streamMessages.size > 0) {
