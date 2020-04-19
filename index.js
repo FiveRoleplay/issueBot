@@ -12,7 +12,9 @@ app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 api.clientID = "buemxzzsq0n2ttyfsyo080npaax118";
 
-const client = new Discord.Client();
+const client = new Discord.Client({
+  fetchAllMembers: true,
+});
 const octokit = new Octokit({
   auth: config.githubToken,
 });
@@ -80,11 +82,13 @@ const searchStreams = () => {
         else {
           const currentData = streamsOnLive.find(elmt => elmt.url === stream.channel.url);
 
-          const newMessage = new Discord.MessageEmbed(currentData.message.embeds[0])
-            .setTitle(stream.channel.status)
-            .setImage(stream.preview.large);
-
-          currentData.message.edit(newMessage);
+          if (currentData.message.embeds[0].title !== stream.channel.status) {
+            const newMessage = new Discord.MessageEmbed(currentData.message.embeds[0])
+              .setTitle(stream.channel.status)
+              .setImage(stream.preview.large);
+  
+            currentData.message.edit(newMessage);
+          }
         }
       })
 
