@@ -286,29 +286,47 @@ app.post("/auth", (req, res) => {
 })
 
 ProtectedRoutes.post("/check", function (req, res) {
-  const { username } = req.body;
+  const { username, client_id } = req.body;
 
-  if (!username) {
+  if (!username && !client_id) {
     res.send('Invalid params');
     return;
   }
 
-  const exist = client.users.cache.find(user => user.username === username) ? true : false;
+  let name;
+  let discriminator;
+
+  if (username) {
+    const splitUsername = username.split('#');
+    discriminator = splitUsername.pop();
+    name = '';
+    splitUsername.forEach((elmt, index) => {
+      if(index !== 0) {
+        name += '#';
+      }
+      name += elmt
+    })
+  }
+  
+  const user = client.users.cache.find((user) => (client_id && user.id === client_id) || (username && user.username === name && user.discriminator === discriminator))
+
+  const exist = user ? true : false;
 
   res.send({
     exist,
+    id: user.id
   });
 });
 
 ProtectedRoutes.post("/message", function (req, res) {
-  const { username, state } = req.body;
+  const { client_id, state } = req.body;
 
-  if (!username || !state) {
-    res.send('Invalid params');
+  if (!client_id || !state) {
+    res.send("Invalid params");
     return;
   }
 
-  const user = client.users.cache.find(user => user.username === username);
+  const user = client.users.cache.find(user => user.id === client_id);
 
   if (user) {
     let color;
@@ -320,7 +338,7 @@ ProtectedRoutes.post("/message", function (req, res) {
         color = "#00FF00";
         gif = "https://media.giphy.com/media/l1J9xV815LOOTUju0/giphy.gif";
         message = [
-          `Salutations ${username},`,
+          `Salutations ${user.username},`,
           '',
           "tu viens d’être accepté sur la whitelist de FiveRP.",
           "Tu peux dès à présent te connecter sur le teamspeak (avec le plugin) et rejoindre le serveur.",
@@ -333,7 +351,7 @@ ProtectedRoutes.post("/message", function (req, res) {
         color = "#FFD601";
         gif = "https://media.giphy.com/media/Hovfs6SeMERMc/giphy.gif";
         message = [
-          `Salutations ${username},`,
+          `Salutations ${user.username},`,
           '',
           "nous avons bien reçus ta candidature pour rejoindre la whitelist de FiveRP. Nous corrigeons en général sous 48h les QCM, inutile de t'inquiéter tu recevras un message privée lorsque la correction sera effectué.",
           '',
@@ -345,7 +363,7 @@ ProtectedRoutes.post("/message", function (req, res) {
         color = "#FF0000";
         gif = "https://media.giphy.com/media/y65VoOlimZaus/giphy.gif";
         message = [
-          `Salutations ${username},`,
+          `Salutations ${user.username},`,
           '',
           "malheureusement tu as échoué lors d’une étape de la whitelist, nous t’invitons à retenter ta chance.",
           '',
@@ -357,7 +375,7 @@ ProtectedRoutes.post("/message", function (req, res) {
         color = "#FFD601";
         gif = "https://media.giphy.com/media/9PnP3QnWhxI6lMiYWY/giphy.gif";
         message = [
-          `Salutations ${username},`,
+          `Salutations ${user.username},`,
           '',
           "tu as réussi ton QCM et tu es désormais en attente d'entretien oral.",
           "Tu trouveras des salons sur discord afin d’effectuer cet entretiens, l’heure est variable et le jour aussi mais en général c’est un jour sur deux vers la fin de journée.",
@@ -370,7 +388,7 @@ ProtectedRoutes.post("/message", function (req, res) {
         color = "#FF0000";
         gif = "https://media.giphy.com/media/xUn3BWwJsCgIkLi8Ba/giphy.gif";
         message = [
-          `Salutations ${username},`,
+          `Salutations ${user.username},`,
           '',
           "tu as échoué à ton premier essai mais tu bénéficies d’une deuxième chance.",
           '',
