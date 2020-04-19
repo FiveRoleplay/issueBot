@@ -107,7 +107,8 @@ client.on('ready', async () => {
 
   setInterval(() => {
     client.user.setPresence({
-      game: {
+      status: 'online',
+      activity: {
         name: `${client.users.cache.size} SuperFive'Fan`,
         type: "WATCHING",
       }
