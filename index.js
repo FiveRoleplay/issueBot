@@ -125,7 +125,7 @@ const searchStreams = () => {
               .setTitle(stream.channel.status)
               .setImage(stream.preview.large);
   
-            streamsOnLive[idnexOf] = currentData.message.edit(newMessage);
+            streamsOnLive[idnexOf].message = await currentData.message.edit(newMessage);
           }
         }
       })
