@@ -92,7 +92,7 @@ const searchStreams = () => {
         }
       })
 
-      streamsOnLive = streamsOnLive(elmt => {
+      streamsOnLive = streamsOnLive.filter(elmt => {
         if (!filterStreams.some(stream => stream.channel.url === elmt.url)) {
           elmt.message.delete();
           streamEnd++;
