@@ -92,12 +92,13 @@ const searchStreams = () => {
         }
       })
 
-      streamsOnLive.forEach(elmt => {
+      streamsOnLive = streamsOnLive(elmt => {
         if (!filterStreams.some(stream => stream.channel.url === elmt.url)) {
-          streamsOnLive.find(elmt2 => elmt2.url === elmt.url).message.delete();
-          streamsOnLive = streamsOnLive.filter(elmt => elmt.url !== elmt.url);
+          elmt.message.delete();
           streamEnd++;
+          return false;
         }
+        return true;
       })
 
       console.log("Recherche terminée.");
