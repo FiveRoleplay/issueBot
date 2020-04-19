@@ -16,6 +16,7 @@
     "cron": "^1.8.2",
     "discord.js": "^12.1.1",
     "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
     "twitch-api-v5": "^2.0.4"
   }
 }

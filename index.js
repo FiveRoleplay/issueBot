@@ -6,12 +6,48 @@ const Octokit = require("@octokit/rest");
 const config = require('./config.json');
 const api = require("twitch-api-v5");
 const CronJob = require("cron").CronJob;
+const jwt = require('jsonwebtoken');
 
 app.set("Secret", config.secret);
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 api.clientID = "buemxzzsq0n2ttyfsyo080npaax118";
+
+const ProtectedRoutes = express.Router();
+
+app.use("/api", ProtectedRoutes);
+
+ProtectedRoutes.use((req, res, next) => {
+  // check header for the token
+  var token = req.headers["access-token"];
+
+  // decode token
+  if (token) {
+    // verifies secret and checks if the token is expired
+    jwt.verify(token, app.get("Secret"), (err, decoded) => {
+      if (err) {
+        return res.json({message: "invalid token"});
+      } else {
+
+        if (decoded.name === config.wordpressName) {
+          next();
+        }
+        else {
+          res.send({
+            message: "Access denied",
+          })
+        }
+      }
+    });
+  } else {
+    // if there is no token
+
+    res.send({
+      message: "No token provided.",
+    });
+  }
+});
 
 const client = new Discord.Client({
   fetchAllMembers: true,
@@ -237,11 +273,19 @@ client.on('message', async msg => {
 client.login(config.botDiscordToken);
 
 app.post("/auth", (req, res) => {
-  const { username } = req.body;
+  const { name } = req.body;
 
+  const token = jwt.sign({
+    name,
+  }, app.get('Secret'));
+
+  res.json({
+    message: "Token created",
+    token,
+  });
 })
 
-app.post("/check", function (req, res) {
+ProtectedRoutes.post("/check", function (req, res) {
   const { username } = req.body;
 
   if (!username) {
@@ -256,7 +300,7 @@ app.post("/check", function (req, res) {
   });
 });
 
-app.post("/message", function (req, res) {
+ProtectedRoutes.post("/message", function (req, res) {
   const { username, state } = req.body;
 
   if (!username || !state) {
