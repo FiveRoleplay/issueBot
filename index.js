@@ -299,6 +299,13 @@ ProtectedRoutes.post("/check", function (req, res) {
 
   if (username) {
     const splitUsername = username.split('#');
+
+    if (splitUsername.length <= 1) {
+      res.send({
+        exist: false,
+      });
+      return;
+    }
     discriminator = splitUsername.pop();
     name = '';
     splitUsername.forEach((elmt, index) => {
@@ -315,7 +322,7 @@ ProtectedRoutes.post("/check", function (req, res) {
 
   res.send({
     exist,
-    id: user.id
+    id: user.id || null,
   });
 });
 
