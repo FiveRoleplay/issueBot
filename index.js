@@ -94,7 +94,7 @@ const searchStreams = () => {
         }
       }
 
-      const filterStreams = streams.filter(stream => stream.channel.status.toLowerCase().match(/gta(-|\s)?life/gm)).reduce((acc, item) => {
+      const filterStreams = streams.filter(stream => stream.channel.status.toLowerCase().match(/five(-|\s)?rp/gm)).reduce((acc, item) => {
         if (!acc.some(elmt => elmt.channel.url === item.channel.url)) return [...acc, item];
         return acc;
       }, []);
