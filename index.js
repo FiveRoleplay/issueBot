@@ -431,4 +431,4 @@ ProtectedRoutes.post("/message", function (req, res) {
   res.send(user ? 'Message sended' : 'Message failed');
 });
 
-app.listen(3000);
+app.listen(80);
