@@ -318,7 +318,7 @@ client.on('message', async msg => {
         let random = Math.floor(Math.random() * 6) + 1;
 
         if (isDev) random = 6;
-        else if (modérateur) random = 1;
+        else if (isModo) random = 1;
 
         total += random;
         if (i !== numberOfDice - 1) {
