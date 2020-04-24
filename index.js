@@ -289,6 +289,10 @@ client.on('message', async msg => {
   //   const nico = client.users.find('discriminator', '0001');
   //   channel.send(nico, { files: ['./blobfish2.jpg'] });
   // }
+  else if (msg.content.includes('!seb?')) {
+    const channel = client.channels.cache.find(elmt => elmt.name === msg.channel.name);
+    channel.send({ files: ['./seb.mp4'] });
+  }
   else if (msg.content.includes('!dés')) {
     const args = msg.content.split(' ');
     const numberOfDice = parseInt(args[1]) || 1;
