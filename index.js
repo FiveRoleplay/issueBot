@@ -308,13 +308,18 @@ client.on('message', async msg => {
     ]
 
     const isDev = msg.member.roles.cache.some(({ name }) => name.toLowerCase() === 'dev');
+    const isModo = msg.member.roles.cache.some(({ name }) => name.toLowerCase() === 'modérateur');
 
     if (numberOfDice && numberOfDice > 0) {
       let text = "Resultat: ";
       let total = 0;
 
       for (let i = 0; i < numberOfDice; i++) {
-        const random = isDev ? 6 : Math.floor(Math.random() * 6) + 1;
+        let random = Math.floor(Math.random() * 6) + 1;
+
+        if (isDev) random = 6;
+        else if (modérateur) random = 1;
+
         total += random;
         if (i !== numberOfDice - 1) {
           text += `${stringNumber[random - 1]} + `;
