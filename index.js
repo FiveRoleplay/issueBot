@@ -1,3 +1,4 @@
+const fs = require("fs");
 const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
@@ -94,7 +95,9 @@ const searchStreams = () => {
         }
       }
 
-      const filterStreams = streams.filter(stream => stream.channel.status.toLowerCase().match(/five(-|\s)?rp/gm)).reduce((acc, item) => {
+      let blacklist = JSON.parse(fs.readFileSync("blacklist.json"));
+
+      const filterStreams = streams.filter(stream => stream.channel.status.toLowerCase().match(/five(-|\s)?rp/gm) || blacklist.includes(stream.channel.url)).reduce((acc, item) => {
         if (!acc.some(elmt => elmt.channel.url === item.channel.url)) return [...acc, item];
         return acc;
       }, []);
@@ -198,7 +201,62 @@ client.on('ready', async () => {
 });
 
 client.on('message', async msg => {
-  if (msg.content.includes('!mochemk')) {
+  const isStaff = msg.member.roles.cache.some(
+    ({name}) =>
+      name.toLowerCase() === "dev" ||
+      name.toLowerCase() === "admin(no-mp)" ||
+      name.toLowerCase() === "ux design" ||
+      name.toLowerCase() === "modération" ||
+      name.toLowerCase() === "comunication" ||
+      name.toLowerCase() === "helper"
+  );
+
+  if (!isStaff) {
+    msg.reply('Tu ne disposes pas des droits nécessaires');
+    return;
+  }
+
+  if (msg.content.includes('!banstream')) {
+    const url = msg.content.split(' ')[1];
+    if (!url) {
+      msg.reply("stream invalide");
+      return;
+    }
+
+    let blacklist = JSON.parse(fs.readFileSync("blacklist.json"));
+
+    if (!blacklist.includes(url)) {
+      blacklist.push(url);
+      streamsOnLive = streamsOnLive.filter(stream => {
+        if (stream.url !== url) {
+          return true;
+        }
+        
+        stream.message.delete();
+        return false;
+      });
+      fs.writeFileSync("blacklist.json", JSON.stringify(blacklist));
+    }
+
+    msg.delete();
+  }
+  else if (msg.content.includes('!unbanstream')) {
+    const url = msg.content.split(" ")[1];
+    if (!url) {
+      msg.reply("stream invalide");
+      return;
+    }
+
+    let blacklist = JSON.parse(fs.readFileSync("blacklist.json"));
+
+    if (blacklist.includes(url)) {
+      blacklist = blacklist.filter((elmt) => elmt !== url);
+      fs.writeFileSync("blacklist.json", JSON.stringify(blacklist));
+    }
+
+    msg.delete();
+  }
+  else if (msg.content.includes('!mochemk')) {
     const channel = client.channels.cache.find((test) => test.name === msg.channel.name);
     channel.send({ files: ['./boutonvert.png'] });
   }
