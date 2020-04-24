@@ -308,7 +308,7 @@ client.on('message', async msg => {
     ]
 
     const isDev = msg.member.roles.cache.some(({ name }) => name.toLowerCase() === 'dev');
-    const isModo = msg.member.roles.cache.some(({ name }) => name.toLowerCase() === 'modérateur');
+    const isModo = msg.member.roles.cache.some(({ name }) => name.toLowerCase() === 'modération');
 
     if (numberOfDice && numberOfDice > 0) {
       let text = "Resultat: ";
