@@ -201,6 +201,10 @@ client.on('ready', async () => {
 });
 
 client.on('message', async msg => {
+  if (msg.content[0] !== '!') {
+    return;
+  }
+
   const isStaff = msg.member.roles.cache.some(
     ({name}) =>
       name.toLowerCase() === "dev" ||
