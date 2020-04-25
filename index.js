@@ -211,7 +211,7 @@ client.on('message', async msg => {
       name.toLowerCase() === "admin(no-mp)" ||
       name.toLowerCase() === "ux design" ||
       name.toLowerCase() === "modération" ||
-      name.toLowerCase() === "comunication" ||
+      name.toLowerCase() === "communication" ||
       name.toLowerCase() === "helper"
   );
 
