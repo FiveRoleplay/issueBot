@@ -509,6 +509,7 @@ const staffLogImages = [
   "https://pngimg.com/uploads/policeman/_PNG15921.png",
   "https://www.sentinel.fr/wp-content/uploads/2018/11/07.png",
 ]; 
+let lastStaffLogImages = 0;
 
 const logImages = [
   "https://pngimage.net/wp-content/uploads/2018/06/secretary-png-3.png",
@@ -517,6 +518,7 @@ const logImages = [
   "http://www.pngmart.com/files/7/Secretary-PNG-Transparent.png",
   "https://www.redfieldassoc.com/wp-content/uploads/2015/08/lawyer-assistant.png",
 ];
+let lastLogImages = 0;
 
 ProtectedRoutes.post("/stafflog", function (req, res) {
   const { text } = req.body;
@@ -528,12 +530,16 @@ ProtectedRoutes.post("/stafflog", function (req, res) {
 
   const channel = client.channels.cache.find((test) => test.name === 'api-log');
   
+  const images = staffLogImages.filter((e, index) => index !== lastStaffLogImages);
+  const imagesIndex = Math.floor(Math.random() * images.length);
+  lastStaffLogImages = imagesIndex;
+
   let embed = new Discord.MessageEmbed()
     .setAuthor(
       "Log'Inator",
       "https://lh3.googleusercontent.com/proxy/lqrjDxXrUXMt4r4zYnhACU36u-lXfcY5nxzKxy-3jFp1AkDENYveHX0Ormvs3wK3ENiCE_An5fMp0EbWHImAJzoxBJwHkaHPKPpt4bBw0HmaZv7Fwdli7Yslb94"
     )
-    .setThumbnail(staffLogImages[Math.floor(Math.random() * staffLogImages.length)])
+    .setThumbnail(images[imagesIndex])
     .setColor("#FFD601")
     .setDescription(text)
     .setTimestamp()
@@ -552,20 +558,26 @@ ProtectedRoutes.post("/log", function (req, res) {
     return;
   }
 
-  const channel = client.channels.cache.find((test) => test.name === "logs");
+  const helperChannel = client.channels.cache.find((test) => test.name === "helper");
+  const modoChannel = client.channels.cache.find((test) => test.name === "modération");
+
+  const images = logImages.filter((e, index) => index !== lastLogImages);
+  const imagesIndex = Math.floor(Math.random() * images.length);
+  lastLogImages = imagesIndex;
 
   let embed = new Discord.MessageEmbed()
     .setAuthor(
       "Log'Woman",
       "https://dineconsulting.net/wp-content/uploads/2019/06/kisspng-computer-icons-businessperson-management-5af335f5aaaee6.6709792515258885016991.png"
     )
-    .setThumbnail(logImages[Math.floor(Math.random() * logImages.length)])
+    .setThumbnail(images[imagesIndex])
     .setColor("#FFD601")
     .setDescription(text)
     .setTimestamp()
     .setFooter("#BalanceTonFondateur");
 
-  channel.send(embed);
+  helperChannel.send(embed);
+  modoChannel.send(embed);
 
   res.send("Log message sended");
 });
