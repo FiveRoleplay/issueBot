@@ -513,6 +513,11 @@ const logImages = [
 ProtectedRoutes.post("/log", function (req, res) {
   const { text } = req.body;
 
+  if (!text) {
+    res.send("Bad params");
+    return;
+  }
+
   const channel = client.channels.cache.find((test) => test.name === 'api-log');
   
   let embed = new Discord.MessageEmbed()
@@ -528,7 +533,7 @@ ProtectedRoutes.post("/log", function (req, res) {
 
   channel.send(embed);
 
-  res.send();
+  res.send("Log message sended");
 });
 
 app.listen(80);
