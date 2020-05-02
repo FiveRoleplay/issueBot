@@ -502,7 +502,7 @@ ProtectedRoutes.post("/message", function (req, res) {
   res.send(user ? 'Message sended' : 'Message failed');
 });
 
-const logImages = [
+const staffLogImages = [
   "https://pngimg.com/uploads/policeman/_PNG15920.png",
   "https://lh3.googleusercontent.com/proxy/a16L9BFh23wcJgnglQYjWHAyz5o-8KAGv7URjp1cPdMsWKFLK2zHkklfYNLqrHkbd-zn0hEcGb-Ki7g-RrD8XHPP-VNpYLn9AlNf8QCTPNuAw96RdbPqgpEe9SgsrOwd7VCtfknNvQI",
   "https://pngimg.com/uploads/policeman/_PNG15918.png",
@@ -510,7 +510,15 @@ const logImages = [
   "https://www.sentinel.fr/wp-content/uploads/2018/11/07.png",
 ]; 
 
-ProtectedRoutes.post("/log", function (req, res) {
+const logImages = [
+  "https://pngimage.net/wp-content/uploads/2018/06/secretary-png-3.png",
+  "https://i.dlpng.com/static/png/6849903_preview.png",
+  "https://i.dlpng.com/static/png/6594827_preview.png",
+  "http://www.pngmart.com/files/7/Secretary-PNG-Transparent.png",
+  "https://www.redfieldassoc.com/wp-content/uploads/2015/08/lawyer-assistant.png",
+];
+
+ProtectedRoutes.post("/stafflog", function (req, res) {
   const { text } = req.body;
 
   if (!text) {
@@ -525,11 +533,37 @@ ProtectedRoutes.post("/log", function (req, res) {
       "Log'Inator",
       "https://lh3.googleusercontent.com/proxy/lqrjDxXrUXMt4r4zYnhACU36u-lXfcY5nxzKxy-3jFp1AkDENYveHX0Ormvs3wK3ENiCE_An5fMp0EbWHImAJzoxBJwHkaHPKPpt4bBw0HmaZv7Fwdli7Yslb94"
     )
-    .setThumbnail(logImages[Math.floor(Math.random() * logImages.length)])
+    .setThumbnail(staffLogImages[Math.floor(Math.random() * staffLogImages.length)])
     .setColor("#FFD601")
     .setDescription(text)
     .setTimestamp()
     .setFooter("Force et Honneur");
+
+  channel.send(embed);
+
+  res.send("Log message sended");
+});
+
+ProtectedRoutes.post("/log", function (req, res) {
+  const {text} = req.body;
+
+  if (!text) {
+    res.send("Bad params");
+    return;
+  }
+
+  const channel = client.channels.cache.find((test) => test.name === "api-log");
+
+  let embed = new Discord.MessageEmbed()
+    .setAuthor(
+      "Log'Woman",
+      "https://dineconsulting.net/wp-content/uploads/2019/06/kisspng-computer-icons-businessperson-management-5af335f5aaaee6.6709792515258885016991.png"
+    )
+    .setThumbnail(logImages[Math.floor(Math.random() * logImages.length)])
+    .setColor("#FFD601")
+    .setDescription(text)
+    .setTimestamp()
+    .setFooter("#BalanceTonFondateur");
 
   channel.send(embed);
 
