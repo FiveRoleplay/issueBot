@@ -552,7 +552,7 @@ ProtectedRoutes.post("/log", function (req, res) {
     return;
   }
 
-  const channel = client.channels.cache.find((test) => test.name === "api-log");
+  const channel = client.channels.cache.find((test) => test.name === "logs");
 
   let embed = new Discord.MessageEmbed()
     .setAuthor(
