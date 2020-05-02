@@ -502,4 +502,33 @@ ProtectedRoutes.post("/message", function (req, res) {
   res.send(user ? 'Message sended' : 'Message failed');
 });
 
+const logImages = [
+  "https://pngimg.com/uploads/policeman/_PNG15920.png",
+  "https://lh3.googleusercontent.com/proxy/a16L9BFh23wcJgnglQYjWHAyz5o-8KAGv7URjp1cPdMsWKFLK2zHkklfYNLqrHkbd-zn0hEcGb-Ki7g-RrD8XHPP-VNpYLn9AlNf8QCTPNuAw96RdbPqgpEe9SgsrOwd7VCtfknNvQI",
+  "https://pngimg.com/uploads/policeman/_PNG15918.png",
+  "https://pngimg.com/uploads/policeman/_PNG15921.png",
+  "https://www.sentinel.fr/wp-content/uploads/2018/11/07.png",
+]; 
+
+ProtectedRoutes.post("/log", function (req, res) {
+  const { text } = req.body;
+
+  const channel = client.channels.cache.find((test) => test.name === 'api-log');
+  
+  let embed = new Discord.MessageEmbed()
+    .setAuthor(
+      "Log'Inator",
+      "https://lh3.googleusercontent.com/proxy/lqrjDxXrUXMt4r4zYnhACU36u-lXfcY5nxzKxy-3jFp1AkDENYveHX0Ormvs3wK3ENiCE_An5fMp0EbWHImAJzoxBJwHkaHPKPpt4bBw0HmaZv7Fwdli7Yslb94"
+    )
+    .setThumbnail(logImages[Math.floor(Math.random() * logImages.length)])
+    .setColor("#FFD601")
+    .setDescription(text)
+    .setTimestamp()
+    .setFooter("Force et Honneur");
+
+  channel.send(embed);
+
+  res.send();
+});
+
 app.listen(80);
