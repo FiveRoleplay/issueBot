@@ -97,7 +97,7 @@ const searchStreams = () => {
 
       let blacklist = JSON.parse(fs.readFileSync("blacklist.json"));
 
-      const filterStreams = streams.filter(stream => stream.channel.status.toLowerCase().match(/five(-|\s)?rp/gm) && !blacklist.includes(stream.channel.url)).reduce((acc, item) => {
+      const filterStreams = streams.filter(stream => stream.channel.status.toLowerCase().match(/\[five(-|\s)?rp\]/gm) && !blacklist.includes(stream.channel.url)).reduce((acc, item) => {
         if (!acc.some(elmt => elmt.channel.url === item.channel.url)) return [...acc, item];
         return acc;
       }, []);
