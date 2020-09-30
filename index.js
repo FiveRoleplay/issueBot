@@ -297,6 +297,10 @@ client.on('message', async msg => {
     const channel = client.channels.cache.find(elmt => elmt.name === msg.channel.name);
     channel.send({ files: ['./mmk.mp4'] });
   }
+  else if (msg.content.includes('!dams?')) {
+    const channel = client.channels.cache.find(elmt => elmt.name === msg.channel.name);
+    channel.send({ files: ['./dams.ogg'] });
+  }
   else if (msg.content.includes('!dés')) {
     const args = msg.content.split(' ');
     const numberOfDice = parseInt(args[1]) || 1;
