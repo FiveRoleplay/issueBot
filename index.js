@@ -205,7 +205,7 @@ client.on('message', async msg => {
     return;
   }
 
-  const isStaff = msg.member.roles.cache.some(
+  const isStaff = !msg.member.roles.cache.some(
     ({name}) =>
       name.toLowerCase() === "dev" ||
       name.toLowerCase() === "admin(no-mp)" ||
@@ -292,6 +292,10 @@ client.on('message', async msg => {
   else if (msg.content.includes('!seb?')) {
     const channel = client.channels.cache.find(elmt => elmt.name === msg.channel.name);
     channel.send({ files: ['./seb.mp4'] });
+  }
+  else if (msg.content.includes('!mmk?')) {
+    const channel = client.channels.cache.find(elmt => elmt.name === msg.channel.name);
+    channel.send({ files: ['./mmk.mp4'] });
   }
   else if (msg.content.includes('!dés')) {
     const args = msg.content.split(' ');
