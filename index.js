@@ -220,15 +220,15 @@ client.on('message', async msg => {
     return;
   }
 
-  // if (msg.content.includes('!test')) {
-  //   const server = client.guilds.cache.find((guild) => guild.name === "TestRP");
-  //   const role = server.roles.cache.find(role => role.name === "En attente d'entretien");
+  if (msg.content.includes('!test')) {
+    const server = client.guilds.cache.find((guild) => guild.id === "670702598285688833");
+    const role = server.roles.cache.find(role => role.name === "En attente d'entretien");
 
-  //   const user = client.users.cache.find((user) => user.username === "Sumsun");
+    const user = client.users.cache.find((user) => user.username === "Sumsun");
 
-  //   const serverUser = server.members.cache.find(member => member.user.id === user.id);
-  //   serverUser.roles.add(role);
-  // }
+    const serverUser = server.members.cache.find(member => member.user.id === user.id);
+    serverUser.roles.add(role);
+  }
 
   if (msg.content.includes('!banstream')) {
     const url = msg.content.split(' ')[1];
@@ -424,8 +424,11 @@ ProtectedRoutes.post("/message", function (req, res) {
   }
 
   const user = client.users.cache.find(user => user.id === client_id);
-  const server = client.guilds.cache.find((guild) => guild.name === "FiveRP");
+  console.log('ICIII 1')
+  const server = client.guilds.cache.find((guild) => guild.id === "670702598285688833");
+  console.log('ICIII 2');
   const serverUser = server.members.cache.find(member => member.user.id === user.id);
+  console.log('ICIII 3');
   let role;
 
   if (user) {
