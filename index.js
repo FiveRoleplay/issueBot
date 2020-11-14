@@ -220,16 +220,6 @@ client.on('message', async msg => {
     return;
   }
 
-  if (msg.content.includes('!test')) {
-    const server = client.guilds.cache.find((guild) => guild.id === "670702598285688833");
-    const role = server.roles.cache.find(role => role.name === "En attente d'entretien");
-
-    const user = client.users.cache.find((user) => user.username === "Sumsun");
-
-    const serverUser = server.members.cache.find(member => member.user.id === user.id);
-    serverUser.roles.add(role);
-  }
-
   if (msg.content.includes('!banstream')) {
     const url = msg.content.split(' ')[1];
     if (!url) {
@@ -378,9 +368,6 @@ app.post("/auth", (req, res) => {
 ProtectedRoutes.post("/check", function (req, res) {
   const { username, client_id } = req.body;
 
-  console.log(username);
-  console.log(client_id);
-
   if (!username && !client_id) {
     res.send('Invalid params');
     return;
@@ -432,7 +419,8 @@ ProtectedRoutes.post("/message", function (req, res) {
   console.log('ICIII 2');
   const serverUser = server.members.cache.find(member => member.user.id === user.id);
   console.log('ICIII 3');
-  let role;
+  let addRole;
+  let removeRole;
 
   if (user) {
     let color;
@@ -441,7 +429,8 @@ ProtectedRoutes.post("/message", function (req, res) {
 
     switch(state) {
       case 'WHITELIST_GOOD': {
-        role = server.roles.cache.find(role => role.name === "Whitelist");
+        addRole = server.roles.cache.find(role => role.name === "Whitelist");
+        removeRole = server.roles.cache.find(role => role.name === "En attente d'entretien");
         color = "#00FF00";
         gif = "https://media.giphy.com/media/l1J9xV815LOOTUju0/giphy.gif";
         message = [
@@ -479,7 +468,7 @@ ProtectedRoutes.post("/message", function (req, res) {
         break;
       }
       case 'WHITELIST_WAIT_VOCAL': {
-        role = server.roles.cache.find(role => role.name === "En attente d'entretien");
+        addRole = server.roles.cache.find(role => role.name === "En attente d'entretien");
         color = "#FFD601";
         gif = "https://media.giphy.com/media/9PnP3QnWhxI6lMiYWY/giphy.gif";
         message = [
@@ -511,8 +500,12 @@ ProtectedRoutes.post("/message", function (req, res) {
       return;
     }
 
-    if (role) {
-      serverUser.roles.add(role);
+    if (addRole) {
+      serverUser.roles.add(addRole);
+    }
+
+    if (removeRole) {
+      serverUser.roles.remove(removeRole);
     }
 
     let embed = new Discord.MessageEmbed()
