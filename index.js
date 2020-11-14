@@ -411,7 +411,7 @@ ProtectedRoutes.post("/check", function (req, res) {
 
   res.send({
     exist,
-    id: user.id || null,
+    id: user?.id || null,
   });
 });
 
