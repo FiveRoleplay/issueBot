@@ -378,6 +378,9 @@ app.post("/auth", (req, res) => {
 ProtectedRoutes.post("/check", function (req, res) {
   const { username, client_id } = req.body;
 
+  console.log(username);
+  console.log(client_id);
+
   if (!username && !client_id) {
     res.send('Invalid params');
     return;
