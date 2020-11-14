@@ -220,6 +220,16 @@ client.on('message', async msg => {
     return;
   }
 
+  // if (msg.content.includes('!test')) {
+  //   const server = client.guilds.cache.find((guild) => guild.name === "TestRP");
+  //   const role = server.roles.cache.find(role => role.name === "En attente d'entretien");
+
+  //   const user = client.users.cache.find((user) => user.username === "Sumsun");
+
+  //   const serverUser = server.members.cache.find(member => member.user.id === user.id);
+  //   serverUser.roles.add(role);
+  // }
+
   if (msg.content.includes('!banstream')) {
     const url = msg.content.split(' ')[1];
     if (!url) {
@@ -414,6 +424,9 @@ ProtectedRoutes.post("/message", function (req, res) {
   }
 
   const user = client.users.cache.find(user => user.id === client_id);
+  const server = client.guilds.cache.find((guild) => guild.name === "FiveRP");
+  const serverUser = server.members.cache.find(member => member.user.id === user.id);
+  let role;
 
   if (user) {
     let color;
@@ -422,6 +435,7 @@ ProtectedRoutes.post("/message", function (req, res) {
 
     switch(state) {
       case 'WHITELIST_GOOD': {
+        role = server.roles.cache.find(role => role.name === "Whitelist");
         color = "#00FF00";
         gif = "https://media.giphy.com/media/l1J9xV815LOOTUju0/giphy.gif";
         message = [
@@ -459,6 +473,7 @@ ProtectedRoutes.post("/message", function (req, res) {
         break;
       }
       case 'WHITELIST_WAIT_VOCAL': {
+        role = server.roles.cache.find(role => role.name === "En attente d'entretien");
         color = "#FFD601";
         gif = "https://media.giphy.com/media/9PnP3QnWhxI6lMiYWY/giphy.gif";
         message = [
@@ -488,6 +503,10 @@ ProtectedRoutes.post("/message", function (req, res) {
     if (!message) {
       res.send("Invalid state param");
       return;
+    }
+
+    if (role) {
+      serverUser.roles.add(role);
     }
 
     let embed = new Discord.MessageEmbed()
