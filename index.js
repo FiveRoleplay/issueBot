@@ -186,15 +186,23 @@ client.on('ready', async () => {
   //   seb.sendMessage("T'as cru t'étais qui?");
   // }).start();
 
+  // FiveRP = 670702598285688833
+  // TestRP = 670812620361564162
+  let server = client.guilds.cache.find((guild) => guild.id === "670702598285688833");
 
   setInterval(() => {
-    client.user.setPresence({
-      status: 'online',
-      activity: {
-        name: `${client.users.cache.size} SuperFive'Fan`,
-        type: "WATCHING",
-      }
-    });
+    if (!server) {
+      server = client.guilds.cache.find((guild) => guild.id === "670702598285688833");
+    }
+    else {
+      client.user.setPresence({
+        status: 'online',
+        activity: {
+          name: `${server.memberCount} SuperFive'Fan`,
+          type: "WATCHING",
+        }
+      });
+    }
   }, 1000);
 
   client.user.setStatus('available')
@@ -414,11 +422,8 @@ ProtectedRoutes.post("/message", function (req, res) {
   }
 
   const user = client.users.cache.find(user => user.id === client_id);
-  console.log('ICIII 1')
   const server = client.guilds.cache.find((guild) => guild.id === "670702598285688833");
-  console.log('ICIII 2');
   const serverUser = server.members.cache.find(member => member.user.id === user.id);
-  console.log('ICIII 3');
   let addRole;
   let removeRole;
 
