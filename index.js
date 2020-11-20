@@ -440,8 +440,6 @@ ProtectedRoutes.post("/message", function (req, res) {
         color = "#00FF00";
         gif = "https://media.giphy.com/media/l1J9xV815LOOTUju0/giphy.gif";
         message = [
-          "**Whitelist FiveRP**",
-          "",
           `Salutation ${user.username},`,
           "",
           "Tu as passé la whitelist FiveRP avec succès ! Une fois le plugin vocal installé, tu pourras te connecter au serveur teamspeak puis au serveur de jeu.",
@@ -472,8 +470,6 @@ ProtectedRoutes.post("/message", function (req, res) {
         color = "#FF0000";
         gif = "https://media.giphy.com/media/y65VoOlimZaus/giphy.gif";
         message = [
-          "**Whitelist FiveRP**",
-          "",
           `${user.username},`,
           "",
           "Nous avons le regret de t'informer que tu n'as pas passé avec succès la whitelist FiveRP.",
@@ -488,11 +484,10 @@ ProtectedRoutes.post("/message", function (req, res) {
         color = "#FFD601";
         gif = "https://media.giphy.com/media/9PnP3QnWhxI6lMiYWY/giphy.gif";
         message = [
-          "**Whitelist FiveRP**",
-          "",
           `Oyez ! Oyez !`,
           "",
-          "Nous avons bien reçu ta demande de whitelist et tu sais quoi ? Tu as validé ton QCM ! Bravo !.",
+          "Nous avons bien reçu ta demande de whitelist et tu sais quoi ?",
+          "Tu as validé ton QCM ! Bravo !",
           "Prochaine étape ? L'entretien !",
           "",
           "Plus d'info sur la suite du processus de whitelist sur : https://dev.five-rp.fr/whitelist/",
@@ -508,8 +503,6 @@ ProtectedRoutes.post("/message", function (req, res) {
         color = "#FF0000";
         gif = "https://media.giphy.com/media/xUn3BWwJsCgIkLi8Ba/giphy.gif";
         message = [
-          "**Whitelist FiveRP**",
-          "",
           `Bonjour, bonsoir, ${user.username},`,
           "",
           "Tu n'as pas réussi à valider ta whitelist mais pas de panique ! Tu peux encore tenter ta chance en repassant ton QCM et ton entretien. La persévérance est une vertu !",
