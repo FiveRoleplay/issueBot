@@ -446,7 +446,6 @@ ProtectedRoutes.post("/message", function (req, res) {
           "Pour te guider dans l'installation : https://wiki.five-rp.fr/installer-le-plugin-vocal",
           "",
           "Bon jeu à toi !",
-          "L'équipe FiveRP",
         ];
         break;
       }
@@ -474,8 +473,6 @@ ProtectedRoutes.post("/message", function (req, res) {
           "",
           "Nous avons le regret de t'informer que tu n'as pas passé avec succès la whitelist FiveRP.",
           "Nous te souhaitons bonne continuation et bon jeu,",
-          "",
-          "L'équipe FiveRP.",
         ];
         break;
       }
@@ -493,7 +490,6 @@ ProtectedRoutes.post("/message", function (req, res) {
           "Plus d'info sur la suite du processus de whitelist sur : https://five-rp.fr/whitelist/",
           "",
           "A très bientôt,",
-          "L'équipe FiveRP",
         ];
         break;
       }
@@ -508,7 +504,6 @@ ProtectedRoutes.post("/message", function (req, res) {
           "Tu n'as pas réussi à valider ta whitelist mais pas de panique ! Tu peux encore tenter ta chance en repassant ton QCM et ton entretien. La persévérance est une vertu !",
           "",
           "Bon courage,",
-          "L'équipe FiveRP"
         ];
         break;
       }
