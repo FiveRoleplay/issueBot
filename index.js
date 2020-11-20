@@ -426,6 +426,7 @@ ProtectedRoutes.post("/message", function (req, res) {
   const serverUser = server.members.cache.find(member => member.user.id === user.id);
   let addRole;
   let removeRole;
+  let removeSecondRole;
 
   if (user) {
     let color;
@@ -439,12 +440,15 @@ ProtectedRoutes.post("/message", function (req, res) {
         color = "#00FF00";
         gif = "https://media.giphy.com/media/l1J9xV815LOOTUju0/giphy.gif";
         message = [
-          `Salutations ${user.username},`,
-          '',
-          "tu viens d’être accepté sur la whitelist de FiveRP.",
-          "Tu peux dès à présent te connecter sur le teamspeak (avec le plugin) et rejoindre le serveur.",
-          '',
-          "Amuses toi bien.",
+          "**Whitelist FiveRP**",
+          "",
+          `Salutation ${user.username},`,
+          "",
+          "Tu as passé la whitelist FiveRP avec succès ! Une fois le plugin vocal installé, tu pourras te connecter au serveur teamspeak puis au serveur de jeu.",
+          "Pour te guider dans l'installation : wiki.five-rp.fr/installer-le-plugin-vocal",
+          "",
+          "Bon jeu à toi !",
+          "L'équipe FiveRP",
         ];
         break;
       }
@@ -452,23 +456,30 @@ ProtectedRoutes.post("/message", function (req, res) {
         color = "#FFD601";
         gif = "https://media.giphy.com/media/Hovfs6SeMERMc/giphy.gif";
         message = [
+          "**Whitelist FiveRP**",
+          "",
           `Salutations ${user.username},`,
-          '',
+          "",
           "nous avons bien reçus ta candidature pour rejoindre la whitelist de FiveRP. Nous corrigeons en général sous 48h les QCM, inutile de t'inquiéter tu recevras un message privée lorsque la correction sera effectué.",
-          '',
-          'À bientôt !',
+          "",
+          "À bientôt !",
         ];
         break;
       }
       case 'WHITELIST_BAD': {
+        removeRole = server.roles.cache.find(role => role.name === "Whitelist");
+        removeSecondRole = server.roles.cache.find(role => role.name === "En attente d'entretien");
         color = "#FF0000";
         gif = "https://media.giphy.com/media/y65VoOlimZaus/giphy.gif";
         message = [
-          `Salutations ${user.username},`,
-          '',
-          "malheureusement tu as échoué lors d’une étape de la whitelist, nous t’invitons à retenter ta chance.",
-          '',
-          'À la prochaine.'
+          "**Whitelist FiveRP**",
+          "",
+          `${user.username},`,
+          "",
+          "Nous avons le regret de t'informer que tu n'as pas passé avec succès la whitelist FiveRP.",
+          "Nous te souhaitons bonne continuation et bon jeu,",
+          "",
+          "L'équipe FiveRP.",
         ];
         break;
       }
@@ -477,24 +488,34 @@ ProtectedRoutes.post("/message", function (req, res) {
         color = "#FFD601";
         gif = "https://media.giphy.com/media/9PnP3QnWhxI6lMiYWY/giphy.gif";
         message = [
-          `Salutations ${user.username},`,
-          '',
-          "tu as réussi ton QCM et tu es désormais en attente d'entretien oral.",
-          "Tu trouveras des salons sur discord afin d’effectuer cet entretiens, l’heure est variable et le jour aussi mais en général c’est un jour sur deux vers la fin de journée.",
-          '',
-          "Bonne chance à toi.",
+          "**Whitelist FiveRP**",
+          "",
+          `Oyez ! Oyez !`,
+          "",
+          "Nous avons bien reçu ta demande de whitelist et tu sais quoi ? Tu as validé ton QCM ! Bravo !.",
+          "Prochaine étape ? L'entretien !",
+          "",
+          "Plus d'info sur la suite du processus de whitelist sur : https://dev.five-rp.fr/whitelist/",
+          "",
+          "A très bientôt,",
+          "L'équipe FiveRP",
         ];
         break;
       }
       case 'WHITELIST_SECOND': {
+        removeRole = server.roles.cache.find(role => role.name === "Whitelist");
+        removeSecondRole = server.roles.cache.find(role => role.name === "En attente d'entretien");
         color = "#FF0000";
         gif = "https://media.giphy.com/media/xUn3BWwJsCgIkLi8Ba/giphy.gif";
         message = [
-          `Salutations ${user.username},`,
-          '',
-          "tu as échoué à ton premier essai mais tu bénéficies d’une deuxième chance.",
-          '',
-          'Allez, on se motive !'
+          "**Whitelist FiveRP**",
+          "",
+          `Bonjour, bonsoir, ${user.username},`,
+          "",
+          "Tu n'as pas réussi à valider ta whitelist mais pas de panique ! Tu peux encore tenter ta chance en repassant ton QCM et ton entretien. La persévérance est une vertu !",
+          "",
+          "Bon courage,",
+          "L'équipe FiveRP"
         ];
         break;
       }
@@ -511,6 +532,10 @@ ProtectedRoutes.post("/message", function (req, res) {
 
     if (removeRole) {
       serverUser.roles.remove(removeRole);
+    }
+
+    if (removeSecondRole) {
+      serverUser.roles.remove(removeSecondRole);
     }
 
     let embed = new Discord.MessageEmbed()
