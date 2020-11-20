@@ -452,20 +452,20 @@ ProtectedRoutes.post("/message", function (req, res) {
         ];
         break;
       }
-      case 'WHITELIST_PROGRESS': {
-        color = "#FFD601";
-        gif = "https://media.giphy.com/media/Hovfs6SeMERMc/giphy.gif";
-        message = [
-          "**Whitelist FiveRP**",
-          "",
-          `Salutations ${user.username},`,
-          "",
-          "nous avons bien reçus ta candidature pour rejoindre la whitelist de FiveRP. Nous corrigeons en général sous 48h les QCM, inutile de t'inquiéter tu recevras un message privée lorsque la correction sera effectué.",
-          "",
-          "À bientôt !",
-        ];
-        break;
-      }
+      // case 'WHITELIST_PROGRESS': {
+      //   color = "#FFD601";
+      //   gif = "https://media.giphy.com/media/Hovfs6SeMERMc/giphy.gif";
+      //   message = [
+      //     "**Whitelist FiveRP**",
+      //     "",
+      //     `Salutations ${user.username},`,
+      //     "",
+      //     "nous avons bien reçus ta candidature pour rejoindre la whitelist de FiveRP. Nous corrigeons en général sous 48h les QCM, inutile de t'inquiéter tu recevras un message privée lorsque la correction sera effectué.",
+      //     "",
+      //     "À bientôt !",
+      //   ];
+      //   break;
+      // }
       case 'WHITELIST_BAD': {
         removeRole = server.roles.cache.find(role => role.name === "Whitelist");
         removeSecondRole = server.roles.cache.find(role => role.name === "En attente d'entretien");
@@ -538,21 +538,23 @@ ProtectedRoutes.post("/message", function (req, res) {
       serverUser.roles.remove(removeSecondRole);
     }
 
-    let embed = new Discord.MessageEmbed()
-      .setColor(color)
-      .setTitle("Whitelist FiveRP")
-      .setThumbnail("https://i.gyazo.com/334ed3ed08f0315d7eb8a08a3937a435.png")
-      .setDescription(message)
-      .setTimestamp()
-      .setFooter("L'équipe de FiveRP");
-      // .addField("Inline field title", "Some value here", true);
-    
-    let embed2 = new Discord.MessageEmbed()
-      .setColor(color)
-      .setImage(gif);
-
-    user.send(embed);
-    user.send(embed2);
+    if (message) {
+      let embed = new Discord.MessageEmbed()
+        .setColor(color)
+        .setTitle("Whitelist FiveRP")
+        .setThumbnail("https://i.gyazo.com/334ed3ed08f0315d7eb8a08a3937a435.png")
+        .setDescription(message)
+        .setTimestamp()
+        .setFooter("L'équipe de FiveRP");
+        // .addField("Inline field title", "Some value here", true);
+      
+      let embed2 = new Discord.MessageEmbed()
+        .setColor(color)
+        .setImage(gif);
+  
+      user.send(embed);
+      user.send(embed2);
+    }
   }
 
   res.send(user ? 'Message sended' : 'Message failed');
