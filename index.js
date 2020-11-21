@@ -583,7 +583,6 @@ ProtectedRoutes.post("/stafflog", function (req, res) {
   let embed = new Discord.MessageEmbed()
     .setAuthor(
       "Log'Inator",
-      "https://lh3.googleusercontent.com/proxy/lqrjDxXrUXMt4r4zYnhACU36u-lXfcY5nxzKxy-3jFp1AkDENYveHX0Ormvs3wK3ENiCE_An5fMp0EbWHImAJzoxBJwHkaHPKPpt4bBw0HmaZv7Fwdli7Yslb94"
     )
     .setThumbnail(images[imagesIndex])
     .setColor("#FFD601")
@@ -604,8 +603,9 @@ ProtectedRoutes.post("/log", function (req, res) {
     return;
   }
 
-  const helperChannel = client.channels.cache.find((test) => test.name === "helper");
-  const modoChannel = client.channels.cache.find((test) => test.name === "modération");
+  // const helperChannel = client.channels.cache.find((test) => test.name === "helper");
+  // const modoChannel = client.channels.cache.find((test) => test.name === "modération");
+  const wlLog = client.channels.cache.find((chan) => chan.name === "wl-log");
 
   const images = logImages.filter((e, index) => index !== lastLogImages);
   const imagesIndex = Math.floor(Math.random() * images.length);
@@ -614,7 +614,6 @@ ProtectedRoutes.post("/log", function (req, res) {
   let embed = new Discord.MessageEmbed()
     .setAuthor(
       "Log'Woman",
-      "https://dineconsulting.net/wp-content/uploads/2019/06/kisspng-computer-icons-businessperson-management-5af335f5aaaee6.6709792515258885016991.png"
     )
     .setThumbnail(images[imagesIndex])
     .setColor("#FFD601")
@@ -622,8 +621,9 @@ ProtectedRoutes.post("/log", function (req, res) {
     .setTimestamp()
     .setFooter("#BalanceTonFondateur");
 
-  helperChannel.send(embed);
-  modoChannel.send(embed);
+  // helperChannel.send(embed);
+  // modoChannel.send(embed);
+  wlLog.send(embed);
 
   res.send("Log message sended");
 });
