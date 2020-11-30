@@ -272,6 +272,10 @@ client.on('message', async msg => {
     const channel = client.channels.cache.find((test) => test.name === msg.channel.name);
     channel.send({ files: ['./boutonvert.png'] });
   }
+  else if (msg.content.includes('!interprete')) {
+    const channel = client.channels.cache.find((test) => test.name === msg.channel.name);
+    channel.send({ files: ['./interprete.mp4'] });
+  }
   else if (msg.content.includes('!issue')) {
     if (msg.channel.name.toLowerCase() !== config.issueChannelName.toLowerCase()) return;
 
