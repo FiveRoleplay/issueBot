@@ -281,7 +281,7 @@ client.on('message', async msg => {
     const channel = client.channels.cache.find(
       (test) => test.name === msg.channel.name
     );
-    channel.send({files: ["./sumsunnnn.mp4"]});
+    channel.send({files: ["./sumsunnnn.mp3"]});
   } else if (msg.content.includes("!issue")) {
     if (
       msg.channel.name.toLowerCase() !== config.issueChannelName.toLowerCase()
