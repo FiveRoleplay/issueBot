@@ -149,6 +149,8 @@ const searchStreams = () => {
   })
 }
 
+let notRight = {};
+
 client.on('ready', async () => {
   console.log('Connecté au Discord!');
 
@@ -224,6 +226,40 @@ client.on('message', async msg => {
   );
 
   if (!isStaff) {
+    if (notRight[msg.member.user.id] === 2) {
+      const text =  [
+        "Tu",
+        "ne",
+        "disposes",
+        "pas",
+        "des",
+        "droits",
+        "nécessaires",
+      ];
+      notRight = {
+        ...notRight,
+        [msg.member.user.id]: 0,
+      };
+
+      let currentIndex = 0;
+
+      let int = setInterval(() => {
+        if (currentIndex === text.length) {
+          msg.member.user.send("https://media3.giphy.com/media/y1WDIwAZRSmru/giphy.gif?cid=ecf05e47ve1jyr0vpvyomioa9ko98bqvm8wj0m3rt6dpbt4m&rid=giphy.gif")
+          clearInterval(int);
+          return;
+        }
+
+        msg.member.user.send(text[currentIndex]);
+        currentIndex++;
+      }, 1000);
+    }
+    else {
+      notRight = {
+        ...notRight,
+        [msg.member.user.id]: (notRight[msg.member.user.id] || 0) + 1,
+      };
+    }
     msg.reply('Tu ne disposes pas des droits nécessaires');
     return;
   }
